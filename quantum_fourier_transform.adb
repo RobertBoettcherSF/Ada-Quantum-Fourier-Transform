@@ -108,24 +108,12 @@ package body Quantum_Fourier_Transform is
                declare
                   Raw_Angle : constant Real_Type :=
                     Two_Pi * Real_Type (J * K) / Real_Type (N);
-                  Angle     : Real_Type;
+                  Angle     : constant Real_Type :=
+                    (if Truncation_M >= Num_Q then Raw_Angle
+                     else Real_Type'Floor (Raw_Angle * Real_Type (2 ** Integer (Truncation_M)) + 0.5) / Real_Type (2 ** Integer (Truncation_M)));
+                  W         : constant Complex_Value := Exp_I (Angle);
                begin
-                  if Truncation_M >= Num_Q then
-                     Angle := Raw_Angle;
-                  else
-                     declare
-                        Steps : constant Real_Type := Real_Type (2 ** Integer (Truncation_M));
-                     begin
-                        Angle := Real_Type'Floor (Raw_Angle * Steps + 0.5) / Steps;
-                     end;
-                  end_if_block:
-                  null;
-                  end if;
-                  declare
-                     W : constant Complex_Value := Exp_I (Angle);
-                  begin
-                     Sum := Sum + (Input_State (Input_State'First + J) * W);
-                  end;
+                  Sum := Sum + (Input_State (Input_State'First + J) * W);
                end;
             end loop;
             Output_State (Output_State'First + K) := Scale (Sum, Inv_SqrtN);
