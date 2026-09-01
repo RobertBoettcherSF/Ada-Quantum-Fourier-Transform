@@ -108,13 +108,24 @@ package body Quantum_Fourier_Transform is
                declare
                   Raw_Angle : constant Real_Type :=
                     Two_Pi * Real_Type (J * K) / Real_Type (N);
-                  Steps     : constant Real_Type := Real_Type (2 ** Integer (Truncation_M));
-                  -- AQFT truncation formula: retain most significant precision bits
-                  Approx_Angle : constant Real_Type :=
-                    Real_Type'Floor (Raw_Angle * Steps) / Steps;
-                  W         : constant Complex_Value := Exp_I (Approx_Angle);
+                  Angle     : Real_Type;
                begin
-                  Sum := Sum + (Input_State (Input_State'First + J) * W);
+                  if Truncation_M >= Num_Q then
+                     Angle := Raw_Angle;
+                  else
+                     declare
+                        Steps : constant Real_Type := Real_Type (2 ** Integer (Truncation_M));
+                     begin
+                        Angle := Real_Type'Floor (Raw_Angle * Steps + 0.5) / Steps;
+                     end;
+                  end_if_block:
+                  null;
+                  end if;
+                  declare
+                     W : constant Complex_Value := Exp_I (Angle);
+                  begin
+                     Sum := Sum + (Input_State (Input_State'First + J) * W);
+                  end;
                end;
             end loop;
             Output_State (Output_State'First + K) := Scale (Sum, Inv_SqrtN);
