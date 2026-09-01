@@ -1,5 +1,5 @@
 GNAT    := gnatmake
-FLAGS   := -gnatwa -gnat2022
+FLAGS   := -cargs -gnatwa -gnat2022
 OBJ_DIR := obj
 BIN_DIR := bin
 
@@ -8,12 +8,12 @@ BIN_DIR := bin
 all: $(BIN_DIR)/tests
 
 $(BIN_DIR)/tests: *.ads *.adb *.gpr
-	mkdir -p $(OBJ_DIR)$(BIN_DIR)
-	$(GNAT)$(FLAGS) -Pquantum_fourier_transform.gpr
+	mkdir -p $(OBJ_DIR) $(BIN_DIR)
+	$(GNAT) -Pquantum_fourier_transform.gpr $(FLAGS)
 
 test: all
 	@echo "Running tests..."
 	@$(BIN_DIR)/tests
 
 clean:
-	rm -rf $(OBJ_DIR)$(BIN_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
