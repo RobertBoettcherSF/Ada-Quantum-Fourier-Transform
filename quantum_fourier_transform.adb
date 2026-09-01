@@ -30,9 +30,6 @@ package body Quantum_Fourier_Transform is
    function Is_Power_Of_Two (N : Positive) return Boolean is
       Temp : Positive := N;
    begin
-      if N = 0 then
-         return False;
-      end if;
       while Temp mod 2 = 0 loop
          Temp := Temp / 2;
       end loop;
