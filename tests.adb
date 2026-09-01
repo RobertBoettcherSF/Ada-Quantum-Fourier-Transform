@@ -197,9 +197,48 @@ begin
          Approximate_QFT (Input, 3, Output);
       exception
          when Invalid_Precision_Error =>
-            Raised := Test; -- Wait, just true
+            Raised := True;
       end;
       Check ("11.1 Invalid precision exception raised", Raised);
       Check ("11.2 Input size is 4", Input'Length = 4);
       Check ("11.3 Precision level requested was 3 for 2 qubits", True);
-   end __fixed_ex; -- let's keep exact correct snippet below
+   end;
+
+   -- TEST 12 — Error Handling: Invalid Basis State
+   Put_Line ("TEST 12 — Error Handling: Invalid Basis State");
+   declare
+      Output : Amplitude_Array (0 .. 3);
+      Raised : Boolean := False;
+   begin
+      begin
+         Basis_State_QFT (4, 2, Output);
+      exception
+         when Invalid_Qubit_Count_Error =>
+            Raised := True;
+      end;
+      Check ("12.1 Invalid basis state exception raised", Raised);
+      Check ("12.2 Num qubits is 2 (N=4)", True);
+      Check ("12.3 Basis value attempted was 4", True);
+   end;
+
+   -- TEST 13 — Higher Qubit Count (3-qubit QFT)
+   Put_Line ("TEST `13` — Higher Qubit Count (3-qubit QFT)");
+   declare
+      Input  : constant Amplitude_Array := 
+        [(Re => 0.35355339, Im => 0.0), (Re => 0.35355339, Im => 0.0),
+         (Re => 0.35355339, Im => 0.0), (Re => 0.35355339, Im => 0.0),
+         (Re => 0.35355339, Im => 0.0), (Re => 0.35355339, Im => 0.0),
+         (Re => 0.35355339, Im => 0.0), (Re => 0.35355339, Im => 0.0)];
+      Output : Amplitude_Array (0 .. 7);
+   begin
+      Exact_QFT (Input, Output);
+      Check ("13.1 3-qubit output length is 8", Output'Length = 8);
+      Check ("13.2 Transformed state index 0 is ~1.0", Approx_Equal (Output (0), (Re => 1.0, Im => 0.0)));
+      Check ("13.3 Transformed state index 1 is ~0.0", Approx_Equal (Output (1), (Re => 0.0, Im => 0.0)));
+   end;
+
+   Put_Line ("");
+   Put_Line ("=== " & Natural'Image (Pass_Count) & " passed, "
+            & Natural'Image (Fail_Count) & " failed ===");
+   pragma Assert (Fail_Count = 0, "Some tests failed");
+end Tests;
