@@ -2,6 +2,7 @@
 -- Package Body: Quantum_Fourier_Transform
 --------------------------------------------------------------------------------
 
+with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
 
 package body Quantum_Fourier_Transform is
@@ -54,7 +55,7 @@ package body Quantum_Fourier_Transform is
    is
       N         : constant Positive := Input_State'Length;
       Inv_SqrtN : constant Real_Type := 1.0 / Sqrt (Real_Type (N));
-      Two_Pi    : constant Real_Type := 2.0 * Elementary_Functions.Pi;
+      Two_Pi    : constant Real_Type := 2.0 * Real_Type (Ada.Numerics.Pi);
    begin
       if Output_State'Length /= N then
          raise Invalid_Dimension_Error;
@@ -87,7 +88,7 @@ package body Quantum_Fourier_Transform is
       N         : constant Positive := Input_State'Length;
       Num_Q     : constant Qubit_Count := Get_Qubit_Count (N);
       Inv_SqrtN : constant Real_Type := 1.0 / Sqrt (Real_Type (N));
-      Two_Pi    : constant Real_Type := 2.0 * Elementary_Functions.Pi;
+      Two_Pi    : constant Real_Type := 2.0 * Real_Type (Ada.Numerics.Pi);
    begin
       if Output_State'Length /= N then
          raise Invalid_Dimension_Error;
@@ -125,7 +126,7 @@ package body Quantum_Fourier_Transform is
    is
       N         : constant Positive := Input_State'Length;
       Inv_SqrtN : constant Real_Type := 1.0 / Sqrt (Real_Type (N));
-      Two_Pi    : constant Real_Type := 2.0 * Elementary_Functions.Pi;
+      Two_Pi    : constant Real_Type := 2.0 * Real_Type (Ada.Numerics.Pi);
    begin
       if Output_State'Length /= N then
          raise Invalid_Dimension_Error;
@@ -157,7 +158,7 @@ package body Quantum_Fourier_Transform is
    is
       N         : constant Positive := 2 ** Integer (Num_Qubits);
       Inv_SqrtN : constant Real_Type := 1.0 / Sqrt (Real_Type (N));
-      Two_Pi    : constant Real_Type := 2.0 * Elementary_Functions.Pi;
+      Two_Pi    : constant Real_Type := 2.0 * Real_Type (Ada.Numerics.Pi);
    begin
       if Output_State'Length /= N then
          raise Invalid_Dimension_Error;
@@ -170,7 +171,7 @@ package body Quantum_Fourier_Transform is
       for K in 0 .. N - 1 loop
          declare
             Angle : constant Real_Type :=
-              Two_Pi * Real_Type (Basis_Val *K) / Real_Type (N);
+              Two_Pi * Real_Type (Basis_Val * K) / Real_Type (N);
          begin
             Output_State (Output_State'First + K) := Scale (Exp_I (Angle), Inv_SqrtN);
          end;
