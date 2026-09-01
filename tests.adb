@@ -144,17 +144,17 @@ begin
       Q_Y     : Amplitude_Array (0 .. 1);
       Combined_Input : constant Amplitude_Array := [(Re => 0.5, Im => 0.0), (Re => 0.5, Im => 0.0)];
       Q_Combined     : Amplitude_Array (0 .. 1);
-      Linear_Combo   : Complex_Value;
+      Linear_Constraint : Complex_Value;
    begin
       Exact_QFT (X_State, Q_X);
       Exact_QFT (Y_State, Q_Y);
       Exact_QFT (Combined_Input, Q_Combined);
       
-      Linear_Combo := (Re => 0.5 * Q_X (0).Re + 0.5 * Q_Y (0).Re,
-                       Im => 0.5 * Q_X (0).Im + 0.5 * Q_Y (0).Im);
+      Linear_Constraint := (Re => 0.5 * Q_X (0).Re + 0.5 * Q_Y (0).Re,
+                            Im => 0.5 * Q_X (0).Im + 0.5 * Q_Y (0).Im);
 
       Check ("8.1 Linearity tested", True);
-      Check ("8.2 Linearity holds at index 0", Approx_Equal (Q_Combined (0), Linear_Combo));
+      Check ("8.2 Linearity holds at index 0", Approx_Equal (Q_Combined (0), Linear_Constraint));
       Check ("8.3 Output dimensions match", Q_Combined'Length = 2);
    end;
 
@@ -205,7 +205,7 @@ begin
    end;
 
    -- TEST 12 — Error Handling: Invalid Basis State
-   Put_Line ("TEST 12 — Error Handling: Invalid Basis State");
+   Put_Line ("Test 12 — Error Handling: Invalid Basis State");
    declare
       Output : Amplitude_Array (0 .. 3);
       Raised : Boolean := False;
