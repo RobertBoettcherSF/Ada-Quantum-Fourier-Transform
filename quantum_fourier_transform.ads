@@ -4,8 +4,6 @@
 --              and its variants (Exact, Approximate, Inverse, and Basis-State).
 --------------------------------------------------------------------------------
 
-with Ada.Numerics;
-
 package Quantum_Fourier_Transform is
 
    -- Domain Types (Strong Typing)
@@ -28,7 +26,6 @@ package Quantum_Fourier_Transform is
    Invalid_Dimension_Error   : exception;
    Invalid_Qubit_Count_Error : exception;
    Invalid_Precision_Error   : exception;
-   Normalization_Error       : exception;
 
    -- Helper / Validation Functions
    function Is_Power_Of_Two (N : Positive) return Boolean;
