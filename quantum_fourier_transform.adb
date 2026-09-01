@@ -14,8 +14,10 @@ package body Quantum_Fourier_Transform is
    function "+" (Left, Right : Complex_Value) return Complex_Value is
    (Re => Left.Re + Right.Re, Im => Left.Im + Right.Im);
 
+   pragma Warnings (Off, "function ""-"" is not referenced");
    function "-" (Left, Right : Complex_Value) return Complex_Value is
    (Re => Left.Re - Right.Re, Im => Left.Im - Right.Im);
+   pragma Warnings (On, "function ""-"" is not referenced");
 
    function "*" (Left, Right : Complex_Value) return Complex_Value is
    (Re => Left.Re * Right.Re - Left.Im * Right.Im,
@@ -107,8 +109,9 @@ package body Quantum_Fourier_Transform is
                   Raw_Angle : constant Real_Type :=
                     Two_Pi * Real_Type (J * K) / Real_Type (N);
                   Steps     : constant Real_Type := Real_Type (2 ** Integer (Truncation_M));
+                  -- AQFT truncation formula: retain most significant precision bits
                   Approx_Angle : constant Real_Type :=
-                    Real_Type'Floor (Raw_Angle * Steps + 0.5) / Steps;
+                    Real_Type'Floor (Raw_Angle * Steps) / Steps;
                   W         : constant Complex_Value := Exp_I (Approx_Angle);
                begin
                   Sum := Sum + (Input_State (Input_State'First + J) * W);
