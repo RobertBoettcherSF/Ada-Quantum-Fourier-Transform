@@ -2,12 +2,12 @@
 -- Package Body: Quantum_Fourier_Transform
 --------------------------------------------------------------------------------
 
-with Ada.Numerics.Elementary_Functions;
+with Ada.Numerics.Generic_Elementary_Functions;
 
 package body Quantum_Fourier_Transform is
 
-   use Ada.Numerics;
-   use Ada.Numerics.Elementary_Functions;
+   package Elementary_Functions is new Ada.Numerics.Generic_Elementary_Functions (Real_Type);
+   use Elementary_Functions;
 
    -- Complex Arithmetic Helpers
    function "+" (Left, Right : Complex_Value) return Complex_Value is
